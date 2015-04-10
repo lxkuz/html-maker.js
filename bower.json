@@ -8,7 +8,7 @@
   "description": "lib for easy html cooking",
   "main": "html-maker.js",
   "moduleType": [
-    "amd"
+    ""
   ],
   "keywords": [
     "html",

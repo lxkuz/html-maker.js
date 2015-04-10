@@ -1,19 +1,12 @@
-Helper = require "src/helper"
+helper = require "src/helper"
 
 class HtmlMaker
-  tags: ["div", "ul", "li", "a", "span"]
-
-
-
-  partial: (f, values...) ->
-    (args...) -> f.apply @, values.concat(args)
 
   start: (draw) =>
-    return "123qwe"
     @buffer = []
+    for tag in helper.tags
+      @[tag] = helper.partial @el, @, tag
 
-    for tag in HtmlMaker.prototype.tags
-      @[tag] = HtmlMaker.prototype.partial @el, @, tag
     @use draw, @
     @
 
@@ -25,13 +18,12 @@ class HtmlMaker
 
     obj = {}
 
-    for tgname in HtmlMaker.prototype.tags
-      obj[tgname] = HtmlMaker.prototype.use(HtmlMaker.prototype.partial(HtmlMaker.prototype.el, @, tgname), obj)
+    for tgname in helper.tags
+      obj[tgname] = helper.partial(HtmlMaker.prototype.el, @, tgname)
 
-    HtmlMaker.prototype.use @func, obj
+    helper.use @func, obj
 
     parent.buffer.push @
-    console.log "</#{@tag}>"
 
 
   #output
@@ -39,7 +31,6 @@ class HtmlMaker
     (@draw(el) for el in @buffer).join("")
 
   draw: (el) =>
-    console.log(el)
     attrs = ""
     attrs += "#{key}='#{val}' " for key, val of el.attrs
     content = []

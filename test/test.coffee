@@ -1,10 +1,22 @@
 assert = require "assert"
-htmlMake = require "../src/html-maker"
+htmlMake = require "html-maker"
+helper = require "src/helper"
 
 describe 'Begin testing of html-maker', ->
-  descripe 'infrastructure testing', ->
+  describe 'infrastructure testing', ->
     it 'partial method testing',  ->
-      htmlMake
+      a = (a, b, c) ->
+        "#{a}#{b}#{c}"
+      b = helper.partial(a, 1, 2)
+      c = helper.partial(a, 9)
+
+      assert.equal b("3"), "123"
+      assert.equal c("7", "8"), "978"
+
+    it '"use" method testing',  ->
+      a = {b: 233}
+      func = -> @["b"]
+      assert.equal helper.use(func, a), 233
 
   describe 'simple using', ->
     it 'setts attributes (class) and handler with content', ->
