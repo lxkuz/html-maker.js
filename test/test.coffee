@@ -1,12 +1,55 @@
-html = htmlMake ->
-  @div id: "a1", ->
-    "world"
+assert = require "assert"
+htmlMake = require "../html-maker"
 
-#    @div id: "a1", class:"hello", ->
-#      @a id: "b1", href: "http://google.com", ->
-#        @span id:"c1", class: "arrow", -> ""
-#        @span id:"c2", class: "hello", -> "Go to Google!"
+describe 'Begin testing of html-maker', ->
+  describe 'simple using', ->
+    it 'setts attributes (class) and handler with content', ->
+      html = htmlMake ->
+        @div class: "hello",  ->
+          "world"
 
-window.t = html
+      assert.equal html, "<div class='hello'>world</div>"
 
-#console.log html.toString()
+
+    it 'setts attributes (id) and with content', ->
+      html = htmlMake ->
+        @div id: "hello", "world"
+
+      assert.equal html, "<div id='hello'>world</div>"
+
+
+    it 'no attributes, only handler with content ', ->
+      html = htmlMake ->
+        @div ->
+          "world"
+
+      assert.equal html, "<div>world</div>"
+
+
+    it 'no attributes, only string content ', ->
+      html = htmlMake ->
+        @div "world"
+
+      assert.equal html, "<div>world</div>"
+
+
+    it 'another tag type', ->
+      html = htmlMake ->
+        @span "span world"
+
+      assert.equal html, "<span>span world</span>"
+
+      html = htmlMake ->
+        @li "li world"
+
+      assert.equal html, "<li>li world</li>"
+
+  describe 'nested structure', ->
+    it 'ul with li', ->
+      html = htmlMake ->
+        @ul ->
+          @li "one"
+          @li "two"
+          @li "three"
+
+      assert.equal html, "<ul><li>one</li><li>two</li><li>three</li></ul>"

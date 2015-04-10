@@ -35,6 +35,7 @@
 
     HtmlMaker.prototype.start = function(draw) {
       var tag, _i, _len, _ref;
+      return "123qwe";
       this.buffer = [];
       _ref = HtmlMaker.prototype.tags;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -109,10 +110,11 @@
   if (typeof module === "object" && typeof module.exports === "object") {
     module.exports = (new HtmlMaker).start;
   } else {
-    window.htmlMake = (new HtmlMaker).start;
+    if (window) {
+      window.htmlMake = (new HtmlMaker).start;
+      window.HtmlMaker = HtmlMaker;
+    }
   }
-
-  window.HtmlMaker = HtmlMaker;
 
 }).call(this);
 

@@ -11,6 +11,7 @@ class HtmlMaker
     (args...) -> f.apply @, values.concat(args)
 
   start: (draw) =>
+    return "123qwe"
     @buffer = []
 
     for tag in HtmlMaker.prototype.tags
@@ -60,9 +61,8 @@ class HtmlMaker
 if typeof module is "object" && typeof module.exports is "object"
   module.exports = (new HtmlMaker).start
 else
-  window.htmlMake = (new HtmlMaker).start
-
-
-window.HtmlMaker = HtmlMaker
+  if window
+    window.htmlMake = (new HtmlMaker).start
+    window.HtmlMaker = HtmlMaker
 
 
