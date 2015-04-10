@@ -1,0 +1,31 @@
+{
+  "name": "html-maker",
+  "version": "0.0.1",
+  "description": "lib for easy html cooking",
+  "main": "html-maker.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+      "jake": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lxkuz/html-maker.js.git"
+  },
+  "keywords": [
+    "html",
+    "builder",
+    "maker"
+  ],
+  "author": "Alexey Kuznetsov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lxkuz/html-maker.js/issues"
+  },
+  "homepage": "https://github.com/lxkuz/html-maker.js"
+}

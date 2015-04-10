@@ -4,9 +4,14 @@
 
   assert = require("assert");
 
-  htmlMake = require("../html-maker");
+  htmlMake = require("../src/html-maker");
 
   describe('Begin testing of html-maker', function() {
+    descripe('infrastructure testing', function() {
+      return it('partial method testing', function() {
+        return htmlMake;
+      });
+    });
     describe('simple using', function() {
       it('setts attributes (class) and handler with content', function() {
         var html;

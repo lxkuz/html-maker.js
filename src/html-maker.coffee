@@ -1,11 +1,9 @@
+Helper = require "src/helper"
+
 class HtmlMaker
   tags: ["div", "ul", "li", "a", "span"]
 
-  use: (fnc, context, args...) ->
-    if fnc && typeof fnc is "function"
-      fnc.apply(context, args)
-    else
-      fnc
+
 
   partial: (f, values...) ->
     (args...) -> f.apply @, values.concat(args)
@@ -20,8 +18,6 @@ class HtmlMaker
     @
 
   el: (parent, tag, attrs, func) ->
-    console.log("<#{tag}>")
-    console.log @
     @func = func
     @attrs = attrs
     @buffer = []

@@ -1,7 +1,11 @@
 assert = require "assert"
-htmlMake = require "../html-maker"
+htmlMake = require "../src/html-maker"
 
 describe 'Begin testing of html-maker', ->
+  descripe 'infrastructure testing', ->
+    it 'partial method testing',  ->
+      htmlMake
+
   describe 'simple using', ->
     it 'setts attributes (class) and handler with content', ->
       html = htmlMake ->
