@@ -5,12 +5,21 @@
 
   Helper = {
     partial: function() {
-      var f, values;
+      var bounded, element, f, values;
       f = arguments[0], values = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      bounded = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = values.length; _i < _len; _i++) {
+          element = values[_i];
+          _results.push(element);
+        }
+        return _results;
+      })();
       return function() {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-        return f.apply(this, values.concat(args));
+        return f.apply(this, bounded.concat(args));
       };
     },
     use: function() {
@@ -22,7 +31,38 @@
         return fnc;
       }
     },
-    tags: ["div", "ul", "li", "a", "span"]
+    tags: ["div", "ul", "li", "a", "span"],
+    definePattern: function(context, name, patterns, func) {
+      var flag, originFunc, patternMatchFunc;
+      originFunc = context[name];
+      flag = "_pm_" + name + "_result";
+      patternMatchFunc = function() {
+        var arg, i, pattern, _i, _len;
+        if (this[flag]) {
+          return this[flag];
+        }
+        for (i = _i = 0, _len = patterns.length; _i < _len; i = ++_i) {
+          pattern = patterns[i];
+          arg = arguments[i];
+          if (typeof arg !== pattern) {
+            return;
+          }
+        }
+        return this[flag] = func.apply(this, arguments);
+      };
+      if (originFunc && typeof originFunc === "function") {
+        return context[name] = function() {
+          this[flag] = void 0;
+          originFunc.apply(this, arguments);
+          return patternMatchFunc.apply(this, arguments);
+        };
+      } else {
+        return context[name] = function() {
+          this[flag] = void 0;
+          return patternMatchFunc.apply(this, arguments);
+        };
+      }
+    }
   };
 
   module.exports = Helper;

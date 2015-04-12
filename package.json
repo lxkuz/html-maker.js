@@ -7,11 +7,13 @@
         "test": "test"
     },
     "devDependencies": {
-        "jake": "latest"
+        "jake": "latest",
+        "coffee-script": "latest"
     },
     "dependencies": {},
     "scripts": {
-        "test": "mocha"
+        "test": "sh test.sh",
+        "start": "sh build.sh"
     },
     "repository": {
         "type": "git",
