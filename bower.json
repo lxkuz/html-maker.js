@@ -1,0 +1,26 @@
+{
+  "name": "html-maker",
+  "version": "0.0.1",
+  "homepage": "https://github.com/lxkuz/html-maker.js",
+  "authors": [
+    "Alexey <kuznetsov@mystand.ru>"
+  ],
+  "description": "lib for easy html cooking",
+  "main": "html-maker.js",
+  "moduleType": [
+    ""
+  ],
+  "keywords": [
+    "html",
+    "builder",
+    "maker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
