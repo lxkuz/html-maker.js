@@ -63,58 +63,51 @@
           this.draw = bind(this.draw, this);
           this.toString = bind(this.toString, this);
           this.start = bind(this.start, this);
-          var i, len, ref, tag;
-          ref = helper.tags;
-          for (i = 0, len = ref.length; i < len; i++) {
-            tag = ref[i];
-            helper.definePattern(this, tag, [
-              'object',
-              'string'
-            ], function (attrs, func) {
-              var obj;
-              obj = {};
-              obj.attrs = attrs;
-              obj.buffer = [];
-              obj.tag = tag;
-              obj.func = func;
-              return this.buffer.push(obj);
-            });
-            helper.definePattern(this, tag, [
-              'object',
-              'string'
-            ], function (attrs, content) {
-              var obj;
-              console.log('pattern MATCH');
-              console.log(arguments);
-              obj = {};
-              obj.attrs = attrs;
-              obj.buffer = [];
-              obj.tag = tag;
-              obj.text = content;
-              return this.buffer.push(obj);
-            });
-            helper.definePattern(this, tag, ['string'], function (content) {
-              var obj;
-              obj = {};
-              obj.attrs = {};
-              obj.buffer = [];
-              obj.tag = tag;
-              obj.text = content;
-              return this.buffer.push(obj);
-            });
-          }
         }
         HtmlMaker.prototype.start = function (func) {
+          var res;
           console.log('start');
           this.buffer = [];
+          helper.makeTagFunctions(this);
           console.log('use draw');
-          helper.use(func, this);
-          return this.toString();
+          res = helper.use(func, this);
+          return this.toString(res);
         };
-        HtmlMaker.prototype.toString = function () {
-          var el;
-          console.log('toString');
-          return function () {
+        HtmlMaker.prototype.el = function (parent, tag, attrs, func) {
+          var obj;
+          obj = {};
+          obj.buffer = [];
+          obj.tag = tag;
+          obj.el = this.el;
+          obj.attrs = {};
+          helper.makeTagFunctions(obj);
+          if (!func && typeof attrs === 'function') {
+            func = attrs;
+          }
+          if (func) {
+            if (typeof func === 'function') {
+              obj.text = helper.use(func, obj);
+            } else {
+              obj.text = func;
+            }
+          }
+          if (attrs) {
+            if (typeof attrs === 'object') {
+              obj.attrs = attrs;
+            }
+            if (!func && typeof attrs === 'string') {
+              obj.text = attrs;
+            }
+            if (func && typeof attrs === 'string') {
+              obj.attrs = { 'class': attrs };
+            }
+          }
+          this.buffer.push(obj);
+          return void 0;
+        };
+        HtmlMaker.prototype.toString = function (end) {
+          var el, res;
+          res = function () {
             var i, len, ref, results;
             ref = this.buffer;
             results = [];
@@ -124,32 +117,34 @@
             }
             return results;
           }.call(this).join('');
+          if (end) {
+            res += end;
+          }
+          return res;
         };
         HtmlMaker.prototype.draw = function (el) {
-          var attrs, content, i, key, len, ref, ref1, subEl, val;
-          console.log('draw el ' + JSON.stringify(el));
-          attrs = '';
-          ref = el.attrs;
-          for (key in ref) {
-            val = ref[key];
-            attrs += key + "='" + val + "' ";
-          }
-          console.log(attrs);
+          var attrs, content, i, key, len, ref, subEl, val;
+          attrs = function () {
+            var ref, results;
+            ref = el.attrs;
+            results = [];
+            for (key in ref) {
+              val = ref[key];
+              results.push([key + "='" + val + "'"]);
+            }
+            return results;
+          }();
           content = [];
-          if (!el.text) {
-            ref1 = el.buffer;
-            for (i = 0, len = ref1.length; i < len; i++) {
-              subEl = ref1[i];
-              content.push(this.draw(subEl));
-            }
-          } else {
-            if (typeof el.text === 'function') {
-              content = helper.use(el.text, this);
-            } else {
-              content = [el.text];
-            }
+          ref = el.buffer;
+          for (i = 0, len = ref.length; i < len; i++) {
+            subEl = ref[i];
+            content.push(this.draw(subEl));
           }
-          return '<' + el.tag + (attrs ? ' ' + attrs : '') + '>' + content.join('') + '</' + el.tag + '>';
+          if (el.text) {
+            content.push(el.text);
+          }
+          console.log(content);
+          return '<' + el.tag + (attrs.length > 0 ? ' ' + attrs.join(' ') : '') + '>' + content.join('') + '</' + el.tag + '>';
         };
         return HtmlMaker;
       }();
@@ -157,7 +152,7 @@
         module.exports = new HtmlMaker().start;
       }
       try {
-        window.htmlMake = new HtmlMaker().start;
+        window.htmlmake = new HtmlMaker().start;
         window.HtmlMaker = HtmlMaker;
       } catch (_error) {
       }
@@ -194,44 +189,27 @@
             return fnc;
           }
         },
+        makeTagFunctions: function (obj) {
+          var tgname, _i, _len, _ref, _results;
+          _ref = Helper.tags;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            tgname = _ref[_i];
+            _results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+          }
+          return _results;
+        },
         tags: [
           'div',
           'ul',
           'li',
           'a',
+          'h1',
+          'h2',
+          'h3',
+          'h4',
           'span'
-        ],
-        definePattern: function (context, name, patterns, func) {
-          var flag, originFunc, patternMatchFunc;
-          originFunc = context[name];
-          flag = '_pm_' + name + '_result';
-          patternMatchFunc = function () {
-            var arg, i, pattern, _i, _len;
-            if (this[flag]) {
-              return this[flag];
-            }
-            for (i = _i = 0, _len = patterns.length; _i < _len; i = ++_i) {
-              pattern = patterns[i];
-              arg = arguments[i];
-              if (typeof arg !== pattern) {
-                return;
-              }
-            }
-            return this[flag] = func.apply(this, arguments);
-          };
-          if (originFunc && typeof originFunc === 'function') {
-            return context[name] = function () {
-              this[flag] = void 0;
-              originFunc.apply(this, arguments);
-              return patternMatchFunc.apply(this, arguments);
-            };
-          } else {
-            return context[name] = function () {
-              this[flag] = void 0;
-              return patternMatchFunc.apply(this, arguments);
-            };
-          }
-        }
+        ]
       };
       module.exports = Helper;
     }.call(this));

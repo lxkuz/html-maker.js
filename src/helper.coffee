@@ -11,26 +11,11 @@ Helper =
     else
       fnc
 
-  tags: ["div", "ul", "li", "a", "span"]
+  makeTagFunctions: (obj) ->
+    for tgname in Helper.tags
+      obj[tgname] = Helper.partial(obj.el, obj, tgname)
 
-  definePattern: (context, name, patterns, func) ->
-    originFunc = context[name]
-    flag = "_pm_#{name}_result"
-    patternMatchFunc = ->
-      return @[flag] if @[flag]
-      for pattern, i in patterns
-        arg = arguments[i]
-        return unless typeof arg is pattern
-      @[flag] = func.apply @, arguments
 
-    if originFunc && typeof originFunc is "function"
-      context[name] = ->
-        @[flag] = undefined
-        originFunc.apply @, arguments
-        patternMatchFunc.apply @, arguments
-    else
-      context[name] = ->
-        @[flag] = undefined
-        patternMatchFunc.apply @, arguments
+  tags: ["div", "ul", "li", "a", "h1", "h2", "h3", "h4", "span"]
 
 module.exports = Helper

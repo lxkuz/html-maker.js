@@ -58,10 +58,10 @@
           var bounded, element, f, values;
           f = arguments[0], values = 2 <= arguments.length ? slice.call(arguments, 1) : [];
           bounded = function () {
-            var j, len, results;
+            var i, len, results;
             results = [];
-            for (j = 0, len = values.length; j < len; j++) {
-              element = values[j];
+            for (i = 0, len = values.length; i < len; i++) {
+              element = values[i];
               results.push(element);
             }
             return results;
@@ -81,44 +81,27 @@
             return fnc;
           }
         },
+        makeTagFunctions: function (obj) {
+          var i, len, ref, results, tgname;
+          ref = Helper.tags;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            tgname = ref[i];
+            results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+          }
+          return results;
+        },
         tags: [
           'div',
           'ul',
           'li',
           'a',
+          'h1',
+          'h2',
+          'h3',
+          'h4',
           'span'
-        ],
-        definePattern: function (context, name, patterns, func) {
-          var flag, originFunc, patternMatchFunc;
-          originFunc = context[name];
-          flag = '_pm_' + name + '_result';
-          patternMatchFunc = function () {
-            var arg, i, j, len, pattern;
-            if (this[flag]) {
-              return this[flag];
-            }
-            for (i = j = 0, len = patterns.length; j < len; i = ++j) {
-              pattern = patterns[i];
-              arg = arguments[i];
-              if (typeof arg !== pattern) {
-                return;
-              }
-            }
-            return this[flag] = func.apply(this, arguments);
-          };
-          if (originFunc && typeof originFunc === 'function') {
-            return context[name] = function () {
-              this[flag] = void 0;
-              originFunc.apply(this, arguments);
-              return patternMatchFunc.apply(this, arguments);
-            };
-          } else {
-            return context[name] = function () {
-              this[flag] = void 0;
-              return patternMatchFunc.apply(this, arguments);
-            };
-          }
-        }
+        ]
       };
       module.exports = Helper;
     }.call(this));

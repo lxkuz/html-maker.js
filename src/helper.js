@@ -31,38 +31,17 @@
         return fnc;
       }
     },
-    tags: ["div", "ul", "li", "a", "span"],
-    definePattern: function(context, name, patterns, func) {
-      var flag, originFunc, patternMatchFunc;
-      originFunc = context[name];
-      flag = "_pm_" + name + "_result";
-      patternMatchFunc = function() {
-        var arg, i, pattern, _i, _len;
-        if (this[flag]) {
-          return this[flag];
-        }
-        for (i = _i = 0, _len = patterns.length; _i < _len; i = ++_i) {
-          pattern = patterns[i];
-          arg = arguments[i];
-          if (typeof arg !== pattern) {
-            return;
-          }
-        }
-        return this[flag] = func.apply(this, arguments);
-      };
-      if (originFunc && typeof originFunc === "function") {
-        return context[name] = function() {
-          this[flag] = void 0;
-          originFunc.apply(this, arguments);
-          return patternMatchFunc.apply(this, arguments);
-        };
-      } else {
-        return context[name] = function() {
-          this[flag] = void 0;
-          return patternMatchFunc.apply(this, arguments);
-        };
+    makeTagFunctions: function(obj) {
+      var tgname, _i, _len, _ref, _results;
+      _ref = Helper.tags;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tgname = _ref[_i];
+        _results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
       }
-    }
+      return _results;
+    },
+    tags: ["div", "ul", "li", "a", "h1", "h2", "h3", "h4", "span"]
   };
 
   module.exports = Helper;
