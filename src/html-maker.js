@@ -18,7 +18,7 @@
       this.buffer = [];
       helper.makeTagFunctions(this);
       console.log("use draw");
-      res = helper.use(func, this);
+      res = func();
       return this.toString(res);
     };
 

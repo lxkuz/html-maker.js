@@ -5,7 +5,7 @@ class HtmlMaker
     @buffer = []
     helper.makeTagFunctions @
     console.log("use draw")
-    res = helper.use func, @
+    res = func()
     @toString(res)
 
   el: (parent, tag, attrs, func) ->

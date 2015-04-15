@@ -81,13 +81,36 @@
             return fnc;
           }
         },
+        wrap: function (fnc) {
+          return function () {
+            var res;
+            Helper.makeTagFunctions(this);
+            res = fnc();
+            Helper.dropTagFunctions(this);
+            return res;
+          };
+        },
         makeTagFunctions: function (obj) {
-          var i, len, ref, results, tgname;
+          var i, len, ref, results, tag;
+          console.log(obj);
           ref = Helper.tags;
           results = [];
           for (i = 0, len = ref.length; i < len; i++) {
-            tgname = ref[i];
-            results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+            tag = ref[i];
+            if (obj[tag]) {
+              throw "function '" + tag + "' already exists in " + obj.toString();
+            }
+            results.push(obj[tag] = Helper.partial(obj.el, obj, tag));
+          }
+          return results;
+        },
+        dropTagFunctions: function (obj) {
+          var i, len, ref, results, tag;
+          ref = Helper.tags;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            tag = ref[i];
+            results.push(delete obj[tag]);
           }
           return results;
         },

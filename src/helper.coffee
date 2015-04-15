@@ -11,10 +11,21 @@ Helper =
     else
       fnc
 
-  makeTagFunctions: (obj) ->
-    for tgname in Helper.tags
-      obj[tgname] = Helper.partial(obj.el, obj, tgname)
+  wrap: (fnc) ->
+    ->
+      Helper.makeTagFunctions @
+      res = fnc()
+      Helper.dropTagFunctions @
+      res
 
+  makeTagFunctions: (obj) ->
+    for tag in Helper.tags
+      throw "function '#{tag}' already exists in #{obj.toString()}" if obj[tag]
+      obj[tag] = Helper.partial(obj.el, obj, tag)
+
+  dropTagFunctions: (obj) ->
+    for tag in Helper.tags
+      delete obj[tag]
 
   tags: ["div", "ul", "li", "a", "h1", "h2", "h3", "h4", "span"]
 

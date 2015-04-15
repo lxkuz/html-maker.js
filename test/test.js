@@ -100,7 +100,7 @@
         return assert.equal(html, "<li>li world</li>");
       });
     });
-    return describe('nested structure', function() {
+    describe('nested structure', function() {
       it('ul with li', function() {
         var html;
         html = htmlmake(function() {
@@ -161,6 +161,18 @@
           });
         });
         return assert.equal(html, "<div class='header'>" + "<span id='first'>1</span>" + "<span class='second'>2</span>" + "<a href='http://google.com'><h1>Hello</h1></a>" + "</div>" + "<div class='body' id='-body-container'>" + "<ul>" + "<li>Hello, Alexey!</li>" + "<li class='one'>Your age is - 25</li>" + "<li></li>" + "</ul>" + "</div>");
+      });
+    });
+    return describe('pass custom content', function() {
+      return it("should get custom content", function() {
+        var html;
+        this.hello = "world";
+        html = htmlmake((function(_this) {
+          return function() {
+            return _this.div(_this.hello);
+          };
+        })(this));
+        return assert.equal(html, "<div>world</div>");
       });
     });
   });

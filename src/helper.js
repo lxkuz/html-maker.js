@@ -31,13 +31,35 @@
         return fnc;
       }
     },
+    wrap: function(fnc) {
+      return function() {
+        var res;
+        Helper.makeTagFunctions(this);
+        res = fnc();
+        Helper.dropTagFunctions(this);
+        return res;
+      };
+    },
     makeTagFunctions: function(obj) {
-      var tgname, _i, _len, _ref, _results;
+      var tag, _i, _len, _ref, _results;
       _ref = Helper.tags;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        tgname = _ref[_i];
-        _results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+        tag = _ref[_i];
+        if (obj[tag]) {
+          throw "function '" + tag + "' already exists in " + (obj.toString());
+        }
+        _results.push(obj[tag] = Helper.partial(obj.el, obj, tag));
+      }
+      return _results;
+    },
+    dropTagFunctions: function(obj) {
+      var tag, _i, _len, _ref, _results;
+      _ref = Helper.tags;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tag = _ref[_i];
+        _results.push(delete obj[tag]);
       }
       return _results;
     },

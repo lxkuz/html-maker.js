@@ -131,3 +131,9 @@ describe 'Begin testing of html-maker', ->
           "<li></li>" +
         "</ul>" +
       "</div>"
+  describe 'pass custom content', ->
+    it "should get custom content", ->
+      @hello = "world"
+      html = htmlmake =>
+        @div @hello
+      assert.equal html, "<div>world</div>"
