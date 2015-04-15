@@ -1,10 +1,8 @@
 helper = require "src/helper"
 class HtmlMaker
   start: (func) =>
-    console.log("start")
     @buffer = []
     helper.makeTagFunctions @
-    console.log("use draw")
     res = helper.use func, @
     @toString(res)
 
@@ -49,7 +47,6 @@ class HtmlMaker
     for subEl in el.buffer
       content.push @draw(subEl)
     content.push el.text if el.text
-    console.log(content)
     "<#{el.tag}#{if attrs.length > 0 then " " + attrs.join(" ") else ""}>#{content.join('')}</#{el.tag}>"
 
 if typeof module is "object" && typeof module.exports is "object"

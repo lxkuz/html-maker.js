@@ -50,7 +50,7 @@
         }
       };
     }();
-  require.define('/build/helper.js', function (module, exports, __dirname, __filename) {
+  require.define('/src/helper.js', function (module, exports, __dirname, __filename) {
     (function () {
       var Helper, slice = [].slice;
       Helper = {
@@ -95,6 +95,11 @@
           'div',
           'ul',
           'li',
+          'form',
+          'input',
+          'select',
+          'option',
+          'i',
           'a',
           'h1',
           'h2',
@@ -106,5 +111,5 @@
       module.exports = Helper;
     }.call(this));
   });
-  require('/build/helper.js');
+  require('/src/helper.js');
 }.call(this, this));
