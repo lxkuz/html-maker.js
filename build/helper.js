@@ -81,13 +81,42 @@
             return fnc;
           }
         },
-        makeTagFunctions: function (obj) {
-          var i, len, ref, results, tgname;
+        dropTagFunctions: function (obj) {
+          var i, len, ref, results, tag;
           ref = Helper.tags;
           results = [];
           for (i = 0, len = ref.length; i < len; i++) {
-            tgname = ref[i];
-            results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+            tag = ref[i];
+            results.push(delete obj[tag]);
+          }
+          return results;
+        },
+        tags: [
+          'div',
+          'ul',
+          'li',
+          'form',
+          'input',
+          'select',
+          'option',
+          'i',
+          'a',
+          'h1',
+          'h2',
+          'h3',
+          'h4',
+          'span'
+        ],
+        makeTagFunctions: function (obj) {
+          var i, len, ref, results, tag;
+          ref = Helper.tags;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            tag = ref[i];
+            if (obj[tag]) {
+              throw "key '" + tag + "' already exists";
+            }
+            results.push(obj[tag] = Helper.partial(obj.el, obj, tag));
           }
           return results;
         },

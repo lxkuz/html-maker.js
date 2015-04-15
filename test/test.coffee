@@ -13,7 +13,7 @@ describe 'Begin testing of html-maker', ->
       assert.equal b("3"), "123"
       assert.equal c("7", "8"), "978"
 
-      obj ={}
+      obj = {}
       for name in ["hello", "world"]
         obj[name] = helper.partial(a, name)
 
@@ -131,3 +131,23 @@ describe 'Begin testing of html-maker', ->
           "<li></li>" +
         "</ul>" +
       "</div>"
+
+  describe 'custom context', ->
+    it "should works with custom context", ->
+      obj = {hello: "world"}
+      html = htmlmake ->
+        @div @hello
+      , obj
+
+      assert.equal html, "<div>world</div>"
+
+
+    it "should raise exception on adding tag, if this key already exists in context", ->
+      try
+        obj = {div: "ooppss"}
+        htmlmake ->
+          @div "hello"
+        , obj
+        throw "It works! This is bad"
+      catch e
+        assert.equal(e, "key 'div' already exists")

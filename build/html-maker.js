@@ -64,12 +64,14 @@
           this.toString = bind(this.toString, this);
           this.start = bind(this.start, this);
         }
-        HtmlMaker.prototype.start = function (func) {
-          var res;
-          this.buffer = [];
-          helper.makeTagFunctions(this);
-          res = helper.use(func, this);
-          return this.toString(res);
+        HtmlMaker.prototype.start = function (func, context) {
+          var res, self;
+          self = context || this;
+          self.buffer = [];
+          helper.makeTagFunctions(self);
+          res = helper.use(func, self);
+          helper.dropTagFunctions(self);
+          return this.toString(self.buffer, res);
         };
         HtmlMaker.prototype.el = function (parent, tag, attrs, func) {
           var obj;
@@ -103,14 +105,13 @@
           this.buffer.push(obj);
           return void 0;
         };
-        HtmlMaker.prototype.toString = function (end) {
+        HtmlMaker.prototype.toString = function (buffer, end) {
           var el, res;
           res = function () {
-            var i, len, ref, results;
-            ref = this.buffer;
+            var i, len, results;
             results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-              el = ref[i];
+            for (i = 0, len = buffer.length; i < len; i++) {
+              el = buffer[i];
               results.push(this.draw(el));
             }
             return results;
@@ -150,7 +151,6 @@
       }
       try {
         window.htmlmake = new HtmlMaker().start;
-        window.HtmlMaker = HtmlMaker;
       } catch (_error) {
       }
     }.call(this));
@@ -186,13 +186,42 @@
             return fnc;
           }
         },
-        makeTagFunctions: function (obj) {
-          var i, len, ref, results, tgname;
+        dropTagFunctions: function (obj) {
+          var i, len, ref, results, tag;
           ref = Helper.tags;
           results = [];
           for (i = 0, len = ref.length; i < len; i++) {
-            tgname = ref[i];
-            results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+            tag = ref[i];
+            results.push(delete obj[tag]);
+          }
+          return results;
+        },
+        tags: [
+          'div',
+          'ul',
+          'li',
+          'form',
+          'input',
+          'select',
+          'option',
+          'i',
+          'a',
+          'h1',
+          'h2',
+          'h3',
+          'h4',
+          'span'
+        ],
+        makeTagFunctions: function (obj) {
+          var i, len, ref, results, tag;
+          ref = Helper.tags;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            tag = ref[i];
+            if (obj[tag]) {
+              throw "key '" + tag + "' already exists";
+            }
+            results.push(obj[tag] = Helper.partial(obj.el, obj, tag));
           }
           return results;
         },

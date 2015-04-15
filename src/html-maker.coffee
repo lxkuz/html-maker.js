@@ -1,10 +1,12 @@
 helper = require "src/helper"
 class HtmlMaker
-  start: (func) =>
-    @buffer = []
-    helper.makeTagFunctions @
-    res = helper.use func, @
-    @toString(res)
+  start: (func, context) =>
+    self = context || @
+    self.buffer = []
+    helper.makeTagFunctions self
+    res = helper.use func, self
+    helper.dropTagFunctions self
+    @toString(self.buffer, res)
 
   el: (parent, tag, attrs, func) ->
     obj = {}
@@ -35,8 +37,8 @@ class HtmlMaker
     undefined
 
   #output
-  toString: (end) =>
-    res = (@draw(el) for el in @buffer).join("")
+  toString: (buffer, end) =>
+    res = (@draw(el) for el in buffer).join("")
     res += end if end
     res
 
@@ -54,6 +56,3 @@ if typeof module is "object" && typeof module.exports is "object"
 
 try
   window.htmlmake = (new HtmlMaker).start
-  window.HtmlMaker = HtmlMaker
-
-
