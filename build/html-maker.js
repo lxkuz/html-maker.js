@@ -50,7 +50,7 @@
         }
       };
     }();
-  require.define('/build/html-maker.js', function (module, exports, __dirname, __filename) {
+  require.define('/src/html-maker.js', function (module, exports, __dirname, __filename) {
     (function () {
       var HtmlMaker, helper, bind = function (fn, me) {
           return function () {
@@ -66,10 +66,8 @@
         }
         HtmlMaker.prototype.start = function (func) {
           var res;
-          console.log('start');
           this.buffer = [];
           helper.makeTagFunctions(this);
-          console.log('use draw');
           res = helper.use(func, this);
           return this.toString(res);
         };
@@ -143,7 +141,6 @@
           if (el.text) {
             content.push(el.text);
           }
-          console.log(content);
           return '<' + el.tag + (attrs.length > 0 ? ' ' + attrs.join(' ') : '') + '>' + content.join('') + '</' + el.tag + '>';
         };
         return HtmlMaker;
@@ -160,29 +157,29 @@
   });
   require.define('/src/helper.js', function (module, exports, __dirname, __filename) {
     (function () {
-      var Helper, __slice = [].slice;
+      var Helper, slice = [].slice;
       Helper = {
         partial: function () {
           var bounded, element, f, values;
-          f = arguments[0], values = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+          f = arguments[0], values = 2 <= arguments.length ? slice.call(arguments, 1) : [];
           bounded = function () {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = values.length; _i < _len; _i++) {
-              element = values[_i];
-              _results.push(element);
+            var i, len, results;
+            results = [];
+            for (i = 0, len = values.length; i < len; i++) {
+              element = values[i];
+              results.push(element);
             }
-            return _results;
+            return results;
           }();
           return function () {
             var args;
-            args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+            args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
             return f.apply(this, bounded.concat(args));
           };
         },
         use: function () {
           var args, context, fnc;
-          fnc = arguments[0], context = arguments[1], args = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
+          fnc = arguments[0], context = arguments[1], args = 3 <= arguments.length ? slice.call(arguments, 2) : [];
           if (fnc && typeof fnc === 'function') {
             return fnc.apply(context, args);
           } else {
@@ -190,19 +187,24 @@
           }
         },
         makeTagFunctions: function (obj) {
-          var tgname, _i, _len, _ref, _results;
-          _ref = Helper.tags;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            tgname = _ref[_i];
-            _results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+          var i, len, ref, results, tgname;
+          ref = Helper.tags;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            tgname = ref[i];
+            results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
           }
-          return _results;
+          return results;
         },
         tags: [
           'div',
           'ul',
           'li',
+          'form',
+          'input',
+          'select',
+          'option',
+          'i',
           'a',
           'h1',
           'h2',
@@ -214,5 +216,5 @@
       module.exports = Helper;
     }.call(this));
   });
-  require('/build/html-maker.js');
+  require('/src/html-maker.js');
 }.call(this, this));

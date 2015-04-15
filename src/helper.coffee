@@ -16,6 +16,6 @@ Helper =
       obj[tgname] = Helper.partial(obj.el, obj, tgname)
 
 
-  tags: ["div", "ul", "li", "a", "h1", "h2", "h3", "h4", "span"]
+  tags: ["div", "ul", "li", "form", "input", "select", "option", "i", "a", "h1", "h2", "h3", "h4", "span"]
 
 module.exports = Helper

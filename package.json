@@ -2,7 +2,7 @@
     "name": "html-maker",
     "version": "0.0.1",
     "description": "lib for easy html cooking",
-    "main": "html-maker.js",
+    "main": "build/htmlmake.min.js",
     "directories": {
         "test": "test"
     },

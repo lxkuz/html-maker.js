@@ -1,5 +1,6 @@
-coffee --map --compile --output build src/*.coffee
-cjsify -o build/helper.js  build/helper.js
-cjsify -o build/html-maker.js  build/html-maker.js
-uglifyjs -o html-maker.js build/*.js
+coffee --map --compile --output src src/*.coffee
+
+cjsify -o build/helper.js  src/helper.js
+cjsify -o build/html-maker.js  src/html-maker.js
+uglifyjs -o build/htmlmake.min.js -d build/*.js
 
