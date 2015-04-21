@@ -131,3 +131,23 @@ describe 'Begin testing of html-maker', ->
           "<li></li>" +
         "</ul>" +
       "</div>"
+
+  describe "using own context", ->
+    it "should works with build variable, simple div", ->
+      html = htmlmake (mk)->
+        mk.div "hello"
+      assert.equal html, "<div>hello</div>"
+
+    it "should works with build variable, nested structure", ->
+      html = htmlmake (mk)->
+        mk.div class:"hello", (mk)->
+          mk.span "world"
+      assert.equal html, "<div class='hello'><span>world</span></div>"
+
+    it "final test: custom 'this'", ->
+      @hello = "world"
+      html = htmlmake (mk)=>
+        mk.span @hello
+        mk.div class:"hello", (mk)=>
+          mk.span @hello
+      assert.equal html, "<span>world</span><div class='hello'><span>world</span></div>"
