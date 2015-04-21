@@ -37,7 +37,7 @@ class HtmlMaker
   #output
   toString: (end) =>
     res = (@draw(el) for el in @buffer).join("")
-    res += end if end
+    res += end if end && typeof(end) is "string"
     res
 
   draw: (el) =>
@@ -46,7 +46,7 @@ class HtmlMaker
     content = []
     for subEl in el.buffer
       content.push @draw(subEl)
-    content.push el.text if el.text
+    content.push el.text if el.text && typeof(el.text) is "string"
     "<#{el.tag}#{if attrs.length > 0 then " " + attrs.join(" ") else ""}>#{content.join('')}</#{el.tag}>"
 
 if typeof module is "object" && typeof module.exports is "object"
