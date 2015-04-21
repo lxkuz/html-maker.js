@@ -67,7 +67,7 @@
         }
         return results;
       }).call(this)).join("");
-      if (end) {
+      if (end && typeof end === "string") {
         res += end;
       }
       return res;
@@ -91,7 +91,7 @@
         subEl = ref[i];
         content.push(this.draw(subEl));
       }
-      if (el.text) {
+      if (el.text && typeof el.text === "string") {
         content.push(el.text);
       }
       return "<" + el.tag + (attrs.length > 0 ? " " + attrs.join(" ") : "") + ">" + (content.join('')) + "</" + el.tag + ">";

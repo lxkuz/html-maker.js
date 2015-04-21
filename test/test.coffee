@@ -28,6 +28,29 @@ describe 'Begin testing of html-maker', ->
 
 
   describe 'simple using', ->
+    it "should returns nothing with array",  ->
+      html = htmlmake ->
+        []
+      assert.equal html, ""
+
+    it "should returns empty el if array inside ",  ->
+      html = htmlmake ->
+        @div ->
+          []
+      assert.equal html, "<div></div>"
+
+    it "should returns nothing with object",  ->
+      html = htmlmake ->
+        {}
+      assert.equal html, ""
+
+    it "should returns empty el if object inside ",  ->
+      html = htmlmake ->
+        @div ->
+          {}
+      assert.equal html, "<div></div>"
+
+
     it "should return result of main handler", ->
       html = htmlmake ->
         "returns!"
@@ -101,6 +124,7 @@ describe 'Begin testing of html-maker', ->
       assert.equal html, "<span id='first'>1</span><span class='second'>2</span><a href='http://google.com'>Hello</a>"
 
 
+
     it "level: hard", ->
       data =
         name: "Alexey",
@@ -151,3 +175,21 @@ describe 'Begin testing of html-maker', ->
         mk.div class:"hello", (mk)=>
           mk.span @hello
       assert.equal html, "<span>world</span><div class='hello'><span>world</span></div>"
+
+
+    it "using loop and custom 'this'", ->
+      @names = ["katarina", "Diana", "Alistar"]
+      html = htmlmake (m)=>
+        m.div "names", (m)=>
+          m.ul (m)=>
+            for name in @names
+              m.li name
+
+
+      assert.equal html, "<div class='names'>" +
+          "<ul>" +
+            "<li>katarina</li>" +
+            "<li>Diana</li>" +
+            "<li>Alistar</li>" +
+          "</ul>" +
+        "</div>"

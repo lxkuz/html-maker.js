@@ -40,6 +40,38 @@
       });
     });
     describe('simple using', function() {
+      it("should returns nothing with array", function() {
+        var html;
+        html = htmlmake(function() {
+          return [];
+        });
+        return assert.equal(html, "");
+      });
+      it("should returns empty el if array inside ", function() {
+        var html;
+        html = htmlmake(function() {
+          return this.div(function() {
+            return [];
+          });
+        });
+        return assert.equal(html, "<div></div>");
+      });
+      it("should returns nothing with object", function() {
+        var html;
+        html = htmlmake(function() {
+          return {};
+        });
+        return assert.equal(html, "");
+      });
+      it("should returns empty el if object inside ", function() {
+        var html;
+        html = htmlmake(function() {
+          return this.div(function() {
+            return {};
+          });
+        });
+        return assert.equal(html, "<div></div>");
+      });
       it("should return result of main handler", function() {
         var html;
         html = htmlmake(function() {
@@ -182,7 +214,7 @@
         });
         return assert.equal(html, "<div class='hello'><span>world</span></div>");
       });
-      return it("final test: custom 'this'", function() {
+      it("final test: custom 'this'", function() {
         var html;
         this.hello = "world";
         html = htmlmake((function(_this) {
@@ -196,6 +228,27 @@
           };
         })(this));
         return assert.equal(html, "<span>world</span><div class='hello'><span>world</span></div>");
+      });
+      return it("using loop and custom 'this'", function() {
+        var html;
+        this.names = ["katarina", "Diana", "Alistar"];
+        html = htmlmake((function(_this) {
+          return function(m) {
+            return m.div("names", function(m) {
+              return m.ul(function(m) {
+                var i, len, name, ref, results;
+                ref = _this.names;
+                results = [];
+                for (i = 0, len = ref.length; i < len; i++) {
+                  name = ref[i];
+                  results.push(m.li(name));
+                }
+                return results;
+              });
+            });
+          };
+        })(this));
+        return assert.equal(html, "<div class='names'>" + "<ul>" + "<li>katarina</li>" + "<li>Diana</li>" + "<li>Alistar</li>" + "</ul>" + "</div>");
       });
     });
   });
