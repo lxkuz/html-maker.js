@@ -4,7 +4,7 @@ Best way is to use this lib with coffescript syntax.
 
 Let's create some dom elements...
 
-# Simple usage
+#### Simple usage
 
 ```coffescript
   html = htmlmake ->
@@ -18,7 +18,7 @@ It returns:
   <span id="super">world!</span>
 ```
 
-# Nesting structure
+#### Nesting structure
 
 ```coffescript
   html = htmlmake ->
@@ -42,7 +42,7 @@ It returns:
   </div>
 ```
 
-# Using your own context inside the handlers
+#### Using your own context inside handlers
 
 ```coffescript
 @hello = "superman"
@@ -55,5 +55,29 @@ It returns:
 ```html
   <span id='super'>superman</span>
 ```
+
+#### Using your own context inside nested handlers
+
+```coffescript
+  @names = ["katarina", "Diana", "Alistar"]
+
+  html = htmlmake (m)=>
+    m.div "names", (m)=>
+      m.ul (m)=>
+        for name in @names
+          m.li name
+```
+
+It returns:
+```html
+  <div class='names'>
+    <ul>
+      <li>katarina</li>
+      <li>Diana</li>
+      <li>Alistar</li>
+    </ul>
+  </div>
+```
+
 
 Enjoy!
