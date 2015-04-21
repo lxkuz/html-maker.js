@@ -42,4 +42,18 @@ It returns:
   </div>
 ```
 
+# Using your own context inside the handlers
+
+```coffescript
+@hello = "superman"
+html = htmlmake (hm)=>
+  hm.span id: "super", @hello
+```
+
+It returns:
+
+```html
+  <span id='super'>superman</span>
+```
+
 Enjoy!
