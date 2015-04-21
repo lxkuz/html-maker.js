@@ -68,7 +68,7 @@
           var res;
           this.buffer = [];
           helper.makeTagFunctions(this);
-          res = helper.use(func, this);
+          res = helper.use(func, this, this);
           return this.toString(res);
         };
         HtmlMaker.prototype.el = function (parent, tag, attrs, func) {
@@ -84,7 +84,7 @@
           }
           if (func) {
             if (typeof func === 'function') {
-              obj.text = helper.use(func, obj);
+              obj.text = helper.use(func, obj, obj);
             } else {
               obj.text = func;
             }

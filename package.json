@@ -1,6 +1,6 @@
 {
     "name": "html-maker",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "lib for easy html cooking",
     "main": "build/htmlmake.min.js",
     "directories": {

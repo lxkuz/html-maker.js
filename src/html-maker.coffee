@@ -3,7 +3,7 @@ class HtmlMaker
   start: (func) =>
     @buffer = []
     helper.makeTagFunctions @
-    res = helper.use func, @
+    res = helper.use func, @, @
     @toString(res)
 
   el: (parent, tag, attrs, func) ->
@@ -19,7 +19,7 @@ class HtmlMaker
 
     if func
       if typeof func is "function"
-        obj.text = helper.use func, obj
+        obj.text = helper.use func, obj, obj
       else
         obj.text = func
 
