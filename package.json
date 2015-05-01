@@ -1,33 +1,35 @@
 {
-    "name": "html-maker",
-    "version": "0.1.1",
-    "description": "lib for easy html cooking",
-    "main": "build/htmlmake.min.js",
-    "directories": {
-        "test": "test"
-    },
-    "devDependencies": {
-        "jake": "latest",
-        "coffee-script": "latest"
-    },
-    "dependencies": {},
-    "scripts": {
-        "test": "sh test.sh",
-        "start": "sh build.sh"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/lxkuz/html-maker.js.git"
-    },
-    "keywords": [
-        "html",
-        "builder",
-        "maker"
-    ],
-    "author": "Alexey Kuznetsov",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/lxkuz/html-maker.js/issues"
-    },
-    "homepage": "https://github.com/lxkuz/html-maker.js"
+  "name": "html-maker",
+  "version": "0.1.2",
+  "description": "lib for easy html cooking",
+  "main": "htmlmake.min.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "coffee-script": "latest"
+  },
+  "dependencies": {
+    "uglifyjs": "^2.4.10",
+    "commonjs-everywhere": "^0.9.7"
+  },
+  "scripts": {
+    "test": "sh test.sh",
+    "start": "sh build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lxkuz/html-maker.js.git"
+  },
+  "keywords": [
+    "html",
+    "builder",
+    "maker"
+  ],
+  "author": "Alexey Kuznetsov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lxkuz/html-maker.js/issues"
+  },
+  "homepage": "https://github.com/lxkuz/html-maker.js"
 }

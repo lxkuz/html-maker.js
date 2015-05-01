@@ -1,12 +1,12 @@
 {
   "name": "html-maker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/lxkuz/html-maker.js",
   "authors": [
     "Alexey <kuznetsov@mystand.ru>"
   ],
   "description": "lib for easy html cooking",
-  "main": "build/htmlmake.min.js",
+  "main": "htmlmake.min.js",
   "moduleType": [
     ""
   ],
