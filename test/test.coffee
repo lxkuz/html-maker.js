@@ -26,6 +26,11 @@ describe 'Begin testing of html-maker', ->
       func = -> @["b"]
       assert.equal helper.use(func, a), 233
 
+  describe 'custom tags', ->
+    it 'should generate custom "custom" tag', ->
+      html = htmlmake ->
+        @tag "custom", "hello"
+      assert.equal html, "<custom>hello</custom>"
 
   describe 'simple using', ->
     it "should returns nothing with array",  ->

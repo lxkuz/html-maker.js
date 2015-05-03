@@ -20,12 +20,12 @@
       return this.toString(res);
     };
 
-    HtmlMaker.prototype.el = function(parent, tag, attrs, func) {
+    HtmlMaker.prototype.tag = function(tagName, attrs, func) {
       var obj;
       obj = {};
       obj.buffer = [];
-      obj.tag = tag;
-      obj.el = this.el;
+      obj.tagName = tagName;
+      obj.tag = this.tag;
       obj.attrs = {};
       helper.makeTagFunctions(obj);
       if (!func && typeof attrs === "function") {
@@ -94,7 +94,7 @@
       if (el.text && typeof el.text === "string") {
         content.push(el.text);
       }
-      return "<" + el.tag + (attrs.length > 0 ? " " + attrs.join(" ") : "") + ">" + (content.join('')) + "</" + el.tag + ">";
+      return "<" + el.tagName + (attrs.length > 0 ? " " + attrs.join(" ") : "") + ">" + (content.join('')) + "</" + el.tagName + ">";
     };
 
     return HtmlMaker;

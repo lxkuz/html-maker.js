@@ -39,6 +39,15 @@
         return assert.equal(helper.use(func, a), 233);
       });
     });
+    describe('custom tags', function() {
+      return it('should generate custom "custom" tag', function() {
+        var html;
+        html = htmlmake(function() {
+          return this.tag("custom", "hello");
+        });
+        return assert.equal(html, "<custom>hello</custom>");
+      });
+    });
     describe('simple using', function() {
       it("should returns nothing with array", function() {
         var html;

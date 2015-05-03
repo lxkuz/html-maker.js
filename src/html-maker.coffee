@@ -6,11 +6,11 @@ class HtmlMaker
     res = helper.use func, @, @
     @toString(res)
 
-  el: (parent, tag, attrs, func) ->
+  tag: (tagName, attrs, func) ->
     obj = {}
     obj.buffer = []
-    obj.tag = tag
-    obj.el = @el
+    obj.tagName = tagName
+    obj.tag = @tag
     obj.attrs = {}
     helper.makeTagFunctions obj
 
@@ -47,7 +47,7 @@ class HtmlMaker
     for subEl in el.buffer
       content.push @draw(subEl)
     content.push el.text if el.text && typeof(el.text) is "string"
-    "<#{el.tag}#{if attrs.length > 0 then " " + attrs.join(" ") else ""}>#{content.join('')}</#{el.tag}>"
+    "<#{el.tagName}#{if attrs.length > 0 then " " + attrs.join(" ") else ""}>#{content.join('')}</#{el.tagName}>"
 
 if typeof module is "object" && typeof module.exports is "object"
   module.exports = (new HtmlMaker).start

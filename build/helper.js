@@ -35,7 +35,7 @@
       var cwd = '/';
       return {
         title: 'browser',
-        version: 'v0.10.26',
+        version: 'v0.10.29',
         browser: true,
         env: {},
         argv: [],
@@ -87,24 +87,47 @@
           results = [];
           for (i = 0, len = ref.length; i < len; i++) {
             tgname = ref[i];
-            results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+            results.push(obj[tgname] = Helper.partial(obj.tag, tgname));
           }
           return results;
         },
         tags: [
           'div',
           'ul',
+          'ol',
           'li',
           'form',
           'input',
           'select',
           'option',
+          'button',
+          'textarea',
+          'p',
+          'table',
+          'td',
+          'tr',
+          'blockquote',
+          'noframes',
+          'frame',
+          'iframe',
+          'pre',
+          'b',
+          'em',
+          'hr',
+          'img',
+          'html',
+          'body',
+          'head',
+          'footer',
+          'title',
           'i',
           'a',
           'h1',
           'h2',
           'h3',
           'h4',
+          'h5',
+          'h6',
           'span'
         ]
       };

@@ -35,7 +35,7 @@
       var cwd = '/';
       return {
         title: 'browser',
-        version: 'v0.10.26',
+        version: 'v0.10.29',
         browser: true,
         env: {},
         argv: [],
@@ -71,12 +71,12 @@
           res = helper.use(func, this, this);
           return this.toString(res);
         };
-        HtmlMaker.prototype.el = function (parent, tag, attrs, func) {
+        HtmlMaker.prototype.tag = function (tagName, attrs, func) {
           var obj;
           obj = {};
           obj.buffer = [];
-          obj.tag = tag;
-          obj.el = this.el;
+          obj.tagName = tagName;
+          obj.tag = this.tag;
           obj.attrs = {};
           helper.makeTagFunctions(obj);
           if (!func && typeof attrs === 'function') {
@@ -141,7 +141,7 @@
           if (el.text && typeof el.text === 'string') {
             content.push(el.text);
           }
-          return '<' + el.tag + (attrs.length > 0 ? ' ' + attrs.join(' ') : '') + '>' + content.join('') + '</' + el.tag + '>';
+          return '<' + el.tagName + (attrs.length > 0 ? ' ' + attrs.join(' ') : '') + '>' + content.join('') + '</' + el.tagName + '>';
         };
         return HtmlMaker;
       }();
@@ -192,24 +192,47 @@
           results = [];
           for (i = 0, len = ref.length; i < len; i++) {
             tgname = ref[i];
-            results.push(obj[tgname] = Helper.partial(obj.el, obj, tgname));
+            results.push(obj[tgname] = Helper.partial(obj.tag, tgname));
           }
           return results;
         },
         tags: [
           'div',
           'ul',
+          'ol',
           'li',
           'form',
           'input',
           'select',
           'option',
+          'button',
+          'textarea',
+          'p',
+          'table',
+          'td',
+          'tr',
+          'blockquote',
+          'noframes',
+          'frame',
+          'iframe',
+          'pre',
+          'b',
+          'em',
+          'hr',
+          'img',
+          'html',
+          'body',
+          'head',
+          'footer',
+          'title',
           'i',
           'a',
           'h1',
           'h2',
           'h3',
           'h4',
+          'h5',
+          'h6',
           'span'
         ]
       };

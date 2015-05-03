@@ -13,9 +13,13 @@ Helper =
 
   makeTagFunctions: (obj) ->
     for tgname in Helper.tags
-      obj[tgname] = Helper.partial(obj.el, obj, tgname)
+      obj[tgname] = Helper.partial(obj.tag, tgname)
 
-
-  tags: ["div", "ul", "li", "form", "input", "select", "option", "i", "a", "h1", "h2", "h3", "h4", "span"]
+  tags: ["div", "ul", "ol", "li",
+         "form", "input", "select", "option", "button", "textarea",
+         "p", "table", "td", "tr", "blockquote",
+         "noframes", "frame", "iframe",  "pre", "b", "em", "hr",
+         "img", "html", "body", "head", "footer", "title",
+         "i", "a", "h1", "h2", "h3", "h4", "h5", "h6", "span"]
 
 module.exports = Helper
