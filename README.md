@@ -38,7 +38,7 @@ It returns:
       <li>two</li>
       <li>tree</li>
     </ul>
-    <a href="http://google.com"">underworld!</a>
+    <a href="http://google.com">underworld!</a>
   </div>
 ```
 
